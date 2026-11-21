@@ -1,0 +1,214 @@
+42-CONTROL GUIDE AND VALIDATION
+
+Each range was rendered at minimum and maximum through the real C engine.
+Verified means connected and numerically tested, not calibrated against a real piano.
+
+01. Hammer mass [hammer_mass]
+    Range: 2 to 15 g.
+    Moving hammer mass. More mass stores more impact energy at the same velocity.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+02. Strike speed [hammer_speed]
+    Range: .2 to 3 m/s.
+    Hammer velocity just before contact. Changes kinetic energy and the nonlinear felt contact force.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+03. Felt firmness [felt_force]
+    Range: 20 to 1000 N @ 1 mm.
+    Felt force at 1 mm compression. This is a physical contact-spring parameter, not a brightness filter.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+04. Felt exponent [felt_exponent]
+    Range: 1.6 to 3.5 power.
+    Nonlinear contact law: F = F1mm * (compression / 1 mm)^exponent. Felt stiffens as it compresses.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+05. Strike point [strike_position]
+    Range: 5 to 30 % length.
+    Hammer position along the speaking string. Modes with a node at this point are weakly excited.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+06. Contact width [hammer_width]
+    Range: 2 to 20 mm.
+    Finite hammer contact width. The excitation is averaged across this strip of the string.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+07. Speaking length [string_length]
+    Range: .45 to .9 m.
+    Distance between string supports. Changes modal frequencies and the distributed string mass.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+08. Tension [string_tension]
+    Range: 120 to 1500 N.
+    Axial string tension. Tighter strings raise pitch; use TUNE C4 to solve tension for the current material and dimensions.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+09. Wire diameter [wire_diameter]
+    Range: .65 to 1.3 mm.
+    Solid round wire diameter. Changes linear density AND bending rigidity (which scales with diameter to the fourth power).
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+10. Metal density [wire_density]
+    Range: 7000 to 9000 kg/m3.
+    Wire material density. More mass per length lowers pitch at a fixed tension.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+11. Elastic modulus [wire_modulus]
+    Range: 100 to 240 GPa.
+    Young's modulus of the wire. Controls bending stiffness and the stretching of the higher partials.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+12. String damping [string_loss]
+    Range: .03 to 2 1/s.
+    Intrinsic modal amplitude-loss rate at the fundamental; higher modes lose energy faster in this reduced model.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+13. Left unison [left_unison]
+    Range: -5 to 5 cents.
+    Small change to the left string's tension, expressed as its fundamental pitch difference from the center string.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+14. Right unison [right_unison]
+    Range: -5 to 5 cents.
+    Small change to the right string's tension. Interference between the three real modal string banks produces beating.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+15. Bridge mass [bridge_mass]
+    Range: 20 to 250 g.
+    Effective moving bridge mass in a mass-spring-damper transfer model. Shifts bridge resonance and inertial loading.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+16. Bridge stiffness [bridge_stiffness]
+    Range: .1 to 8 MN/m.
+    Bridge support spring stiffness. Combined with bridge mass it determines bridge resonance.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+17. Bridge loss [bridge_damping]
+    Range: 1 to 100 N s/m.
+    Viscous loss in the bridge support. Broadens and reduces its resonance.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+18. Bridge footprint [bridge_width]
+    Range: 5 to 100 mm.
+    Width of the force distribution on the soundboard. Changes how strongly each plate mode is driven.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+19. Board length [board_length]
+    Range: .8 to 1.8 m.
+    Length of the rectangular orthotropic plate approximation. Changes its flexural modal frequencies.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+20. Board width [board_width]
+    Range: .55 to 1.3 m.
+    Width of the soundboard plate. Cross-grain stiffness is accounted for separately.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+21. Board thickness [board_thickness]
+    Range: 5 to 14 mm.
+    Thickness changes plate mass and bending rigidity. Bending rigidity scales as thickness cubed.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+22. Wood density [wood_density]
+    Range: 300 to 650 kg/m3.
+    Soundboard wood density. Changes modal masses and flexural frequencies.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+23. Along-grain E [wood_modulus]
+    Range: 5 to 18 GPa.
+    Longitudinal Young's modulus of the board wood. The plate is a reduced model without individually modeled ribs.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+24. Cross-grain E [grain_ratio]
+    Range: .025 to .2 ratio.
+    Cross-grain / along-grain elastic-modulus ratio. Changes the directional bending response.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+25. Board loss [board_loss]
+    Range: .008 to .12 loss factor.
+    Soundboard structural loss factor. Larger values produce broader resonances and shorter board ringing.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+26. Case panel mass [case_mass]
+    Range: 1 to 15 kg.
+    Effective casing-panel mass, represented by one damped structural mode.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+27. Case stiffness [case_stiffness]
+    Range: .1 to 8 MN/m.
+    Effective casing-panel spring stiffness. Sets case resonance together with panel mass.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+28. Case loss [case_loss]
+    Range: .015 to .3 loss factor.
+    Structural energy loss in the casing panel. Controls how long its resonance rings.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+29. Air cavity [cavity_volume]
+    Range: .08 to .9 m3.
+    Internal case air volume in a lumped Helmholtz-resonator approximation, not a full grand-piano enclosure simulation.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+30. Lid aperture [cavity_opening]
+    Range: 100 to 4000 cm2.
+    Effective open area of the case. Sets acoustic cavity resonance and radiation damping; not literal lid angle.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+31. Damper friction [damper_loss]
+    Range: .05 to 8 N s/m.
+    Effective viscous damping at the felt contact. Applied to each mode according to local string motion.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+32. Damper point [damper_position]
+    Range: 22 to 78 % length.
+    Where the damper contacts the string. A mode near a node at this point is damped less strongly.
+    Verified: rendered response differs from default; both endpoint renders finite. Endpoints have mirror symmetry; both differ from the default position.
+
+33. Damper width [damper_width]
+    Range: 10 to 70 mm.
+    Finite damper contact footprint. Uses the mean squared mode shape over the contact region.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+34. Lowering time [damper_time]
+    Range: 5 to 120 ms.
+    Time scale for the damper to return after key release. Smoothly changes contact instead of chopping the waveform.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+35. Pedal lift [pedal_lift]
+    Range: 0 to 100 %.
+    Lifts the damper away from the string. 100% keeps the strings ringing after you release the key.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+36. Felt compression [damper_compression]
+    Range: .1 to 1.5 mm.
+    Damper preload/compression. Scales effective contact damping using an explicitly approximate square-root contact law.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+37. Room length [room_length]
+    Range: 4 to 14 m.
+    Shoebox room length. Sets the front/back image-source reflection distances and room volume.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+38. Room width [room_width]
+    Range: 3 to 10 m.
+    Shoebox room width. Sets side-wall reflection distances and room volume.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+39. Room height [room_height]
+    Range: 2.4 to 6 m.
+    Room height. Source and microphone are both at 1.2 m; floor and ceiling reflection paths are calculated.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+40. Wall absorption [wall_absorption]
+    Range: .05 to .85 fraction.
+    Average wall energy absorption. Controls reflection amplitudes and the diffuse decay estimate.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+41. Mic distance [mic_distance]
+    Range: .2 to 1.8 m.
+    Distance from the virtual radiator: propagation delay and geometric spreading change together.
+    Verified: rendered response differs from default; both endpoint renders finite.
+
+42. Mic polar angle [mic_angle]
+    Range: 0 to 80 deg.
+    Observation angle from the board normal. Uses an approximate finite-radiator directivity response.
+    Verified: rendered response differs from default; both endpoint renders finite.

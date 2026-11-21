@@ -1,0 +1,111 @@
+PIANO MATERIAL LAB - WHAT THE KNOBS ACTUALLY CONTROL
+
+This is a reduced physical model, not a calibrated reconstruction of a real
+piano and not a full 3D finite-element or acoustic-field simulation. Every one
+of the 42 knobs is connected to the rendered model. The monitor-level slider
+is separate and does not pretend to be an instrument property.
+
+STRINGS AND HAMMER
+Three slightly detuned strings each carry 32 transverse modes. With length L,
+area A, linear density mu=rho*A, tension T, second moment I=pi*d^4/64 and Young's
+modulus E, angular modal frequencies are:
+  omega_n^2 = (T/mu)*(n*pi/L)^2 + (E*I/mu)*(n*pi/L)^4
+Modal masses are mu*L/2. Detuning is implemented as a change in tension. The
+TUNE C4 button solves T for 261.625565 Hz using the CURRENT wire dimensions and
+material, including bending stiffness. It does not silently retune the string
+when you change other physical knobs. Tension must remain in the knob's range.
+
+The hammer is an actual moving mass with position and velocity. Felt force is
+F = F_at_1mm * max(compression / 0.001, 0)^exponent. Contact compression depends
+on the current string displacement at the strike point, averaged over the
+three strings. Equal total-force sharing among the unisons is assumed. Hammer
+contact is integrated at 8x the audio rate; the strings retain existing motion
+when struck again. A finite contact width applies the spatial integral of each
+mode shape. This captures contact-duration and strike-location effects without
+using recorded audio or a generic brightness knob.
+
+Damping uses positive modal losses. Higher string modes have a fixed quadratic
+increase in intrinsic loss. This model omits longitudinal string motion,
+nonlinear tension modulation, separate transverse polarizations, duplex scaling,
+and sympathetic vibration of the other 87 notes. These are limitations, not
+hidden knobs or claimed effects.
+
+BRIDGE AND SOUNDBOARD
+The bridge is a mass-spring-damper transfer system. String endpoint force drives
+it; its support force drives the board. A positive driving-point-mobility
+estimate also sets the string's radiation-loss rate (bounded at 20/s). This is
+a feed-forward body model plus a passive loading estimate, not a fully coupled,
+energy-exact bridge/board/string solve.
+
+The board has 64 modes of an orthotropic, simply supported rectangular plate.
+Its frequencies follow the thin-plate equation with along-grain modulus,
+cross-grain modulus, density, thickness, length and width. Poisson ratio 0.3 and
+shear modulus sqrt(Ex*Ey)/5 are fixed assumptions. The bridge sits at fractions
+0.37 and 0.43 of the plate dimensions. The bridge footprint spatially averages
+modal excitation. The plate model has no explicit ribs, crown, tapered edges,
+cutouts, or measured piano response; its lowest mode can be lower than that of
+a real braced soundboard. Loss factor controls mode damping.
+
+Radiation uses modal displaced-volume acceleration, with an approximate small
+off-axis term for modes that cancel on axis. Microphone angle modifies the
+finite-radiator directivity approximation. This is not a full directional
+soundboard radiation calculation. The plotted signal is normalized model
+pressure, not a calibrated microphone SPL measurement.
+
+CASE AND CAVITY
+One effective casing-panel mode has frequency sqrt(K/M)/(2*pi) and a structural
+loss factor. The air cavity is a lumped Helmholtz-type approximation:
+  omega_H = c*sqrt(aperture_area / (volume*effective_neck_length))
+with c=343 m/s and effective neck length 0.06 m + 1.7*sqrt(area/pi). The lid
+aperture knob is an equivalent open AREA, not a modeled hinge angle. Case and
+cavity radiation mixes have fixed geometric scale factors; their controls change
+actual resonance frequencies and decay, not arbitrary effect presets.
+
+DAMPERS
+After key release, a first-order lowering motion increases damping at the felt
+contact. Contact loss depends on the mean squared mode shape over the damper
+width. The point is therefore important: modes near a node can ring longer.
+Positions mirrored about the string midpoint have the same diagonal damping
+response in this simplified model. Friction, width, position and preload all
+enter this calculation. Compression scales contact damping by sqrt(x/0.5 mm),
+an explicitly phenomenological approximation. Pedal lift reduces contact;
+100% lift leaves the string free after key release. Inter-mode damper coupling,
+bounce and detailed felt friction are not resolved.
+
+ROOM AND MICROPHONE
+A rectangular room supplies six first-order image-source reflection distances.
+The source is centered horizontally; source and microphone are 1.2 m high, with
+the microphone offset along the room's length. Wall absorption sets reflected
+amplitudes and an Eyring decay estimate: T60 = 0.161 V / (-S ln(1-alpha)). A damped
+feedback delay network approximates the diffuse tail. This is not ray tracing
+or a measured room impulse response. Microphone distance affects propagation
+delay and geometric spreading; polar angle affects radiator directivity.
+
+LIVE CHANGES AND OUTPUT
+Structural changes preserve oscillator state and crossfade two model instances
+for 2048 samples (~46 ms). Fast drags are coalesced until the preceding fade
+finishes. This is an artifact-avoidance mechanism, not a physical simulation of
+instantaneously replacing a vibrating piano's material. Hammer properties shape
+the next contact. AUTO STRIKE triggers every 2.5 seconds with a one-second hold.
+
+The audio path uses six 512-sample buffers and Windows completion events, with
+no Sleep polling. Output is mono 44.1 kHz / 16-bit PCM. A safety ceiling is
+transparent below 0.7 full scale and soft-limits extreme experiments above that.
+'Safety: LIMITED' records ceiling activity since launch. Reduce monitor level
+if needed; it does not alter the physical forces. No native audio hearing or
+measured acoustic-piano match is claimed by the coding agent.
+
+IMPLEMENTATION AND RESEARCH REFERENCES
+parameters.h: units, ranges, per-knob meaning and preset validation.
+synth.h: physical equations, modal dynamics, contact and room rendering.
+piano.c: event-driven audio, parameter publication, export and integration tests.
+workbench-ui.h: native knobs, numerical entry, presets and waveform display.
+
+https://euphonics.org/12-2-1-parameter-values-for-piano-simulations/
+https://www.speech.kth.se/music/5_lectures/askenflt/stricont.html
+https://www.dafx.de/paper-archive/2006/papers/p_077.pdf
+https://ntrs.nasa.gov/api/citations/19860008651/downloads/19860008651.pdf
+https://learn.microsoft.com/en-us/windows/win32/multimedia/audio-data-blocks
+
+The implementation is original and simplified; it does not claim to reproduce
+any paper's complete solver or validation results.

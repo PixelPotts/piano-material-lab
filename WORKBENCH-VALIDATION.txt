@@ -1,0 +1,54 @@
+PIANO MATERIAL LAB - FINAL VALIDATION
+
+Verified: requested larger app; actual client area 1440 x 960.
+Verified: 42 physical knobs in seven categories; units, ranges and help text.
+Verified: all 42 controls alter actual rendered model output; see CONTROL-GUIDE.txt.
+Verified: 84 endpoint renders plus reference; zero non-finite outputs.
+Verified: 80 combined-settings stress cases, including all-minimum and all-maximum configurations.
+Verified: 42 live-model transition boundaries preserve the first output sample.
+Verified: rendering one sample at a time versus 512-sample blocks is byte-identical.
+Verified: reference C4 is 261.625565 Hz from physical equations; generated FFT peak 261.595 Hz at finite analysis resolution.
+Verified: silence, release, sustained decay, repeat strikes, and unclipped reference renders.
+Verified: real native knob dragging, exact-number entry, preset round trip and keyboard strike/release.
+Verified: saved preset rejects invalid/non-finite input without replacing valid settings.
+Verified: actual waveOut device accepted buffers during live adjustment of all 42 controls; zero observed queue gaps.
+Verified: final window screenshot inspected; all categories, knobs, values and controls visible.
+Verified: previous executable/source preserved in backups/before-physical-workbench; main app reopened with its saved physical settings.
+
+Numerical stress tests may intentionally engage the output safety ceiling. Extreme combinations are not claimed to match a buildable piano.
+Pending/unverified: perceptual realism and acoustic calibration against a real piano; no direct audio listening by the coding agent.
+Approximation: reduced modal model with estimated bridge loading, simplified plate/casing/cavity/radiation and room. Full equations and limitations: MODEL.txt.
+Unchanged: API-listener files/key configuration. No API key is configured; no external audio-model assessment was performed.
+
+Final live-device telemetry:
+blocks_submitted=1747
+queue_empty_observations=0
+max_render_ms=1.3298
+block_samples=512
+buffer_count=6
+waveout_result=0
+nonfinite=0
+
+Native UI test:
+PASS: 1440x960 client; all 42 native knob drags update distinct parameters; preset round trip; exact numeric entry; keyboard strike/release; 42 knob adjustments during live playback; rendered screenshots; responsive window.
+
+Engine integration checks:
+default_frequency=261.625565000
+default_tension=577.535236280
+block_partition_invariance=PASS
+crossfade_first_sample_checks=42
+combined_settings_stress_cases=80
+maximum_safety_limited_samples=14110
+preset_roundtrip_and_invalid_input=checked
+failures=0
+
+Final delivered build SHA-256:
+b872d0a414dc23787cd966a327a233b9e1fa32c9b2b589dbcdd8cb2fe45e3c0e
+
+Source SHA-256:
+piano.c 6b40fef5f10aba23f814ab73b4f2c6429a1d5aaefba76f78cb2a230dcdb59157
+synth.h 30632e3ea2768a93f42c93dc608ce4156cc281171629a6a10b1aa4ad9e835e5d
+parameters.h ce928fc027150c4f9219b691fac7c10840bebd4a7e4f2b314ee0203d7d914580
+workbench-ui.h 1f582ad42dc9acb67d6df52c0cad9634cae53465feaf39158d00c565319aec43
+waveout.h 61a6b889b7bed02e113095a90db8ac0fea3c154df8c74c9f31d73ddd0cddce1e
+build.bat fd8cc848593d25d9cd71be7bc710c1d2c208bc48a22e9f278053681206121ad1
