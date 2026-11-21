@@ -80,4 +80,3 @@ file hashes, and the assessment. Existing reports are preserved.
 Tests use the real WAV files and a local simulated HTTP API; they do not prove
 live API access or perceptual audio understanding. Actual API validation is
 pending until a working key is configured and a real assessment is returned.
-
